@@ -16,6 +16,7 @@ const campgroundSchema = new Schema({
   ]
 }) 
 
+// remov reviews after deleting a campground
 campgroundSchema.post('findOneAndDelete', async function(doc) {
   if(doc) {
     await Review.deleteMany({
