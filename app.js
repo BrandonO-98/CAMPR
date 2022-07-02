@@ -60,10 +60,15 @@ passport.serializeUser(User.serializeUser())
 // how to remove data from session
 passport.deserializeUser(User.deserializeUser())
 
-// add user to the local storage accessible by views
+// add user to the local storage accessible only by views
 app.use((req, res, next) => {
+    // store the url requested if comming from anything but home and login pgs
+  if (!['/login', '/'].includes(req.originalUrl)) {
+    req.session.returnTo = req.originalUrl
+  }
   res.locals.success = req.flash('success')
   res.locals.error = req.flash('error')
+  // on authenticate method, req.user is auto set to the logged in user
   res.locals.currentUser = req.user
   next()
 })

@@ -8,6 +8,11 @@ const campgroundSchema = new Schema({
   price: Number,
   description: String,
   location: String,
+  // associate a campground with a user to create permissions
+  author: {
+    type: Schema.Types.ObjectId, 
+    ref: 'User'
+  },
   reviews: [
     {
       type: Schema.Types.ObjectId,
