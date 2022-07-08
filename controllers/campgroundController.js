@@ -1,4 +1,5 @@
 const Campground = require('../models/campground')
+const { cloudinary } = require('../cloudinary')
 
 module.exports.index = async (req, res)=> {
   const campgrounds = await Campground.find({})
@@ -14,7 +15,6 @@ module.exports.createCampground = async (req, res)=> {
   // add a user to the new campground, the user mehtod is auto added to the req
   newCampground.author = req.user._id
   await newCampground.save()
-  console.log(newCampground)
   req.flash('success', 'Successfully made a new campground!')
   res.redirect(`/campgrounds/${newCampground._id}`)
 }
@@ -51,7 +51,19 @@ module.exports.renderEditForm = async (req, res)=> {
 
 module.exports.editCampground = async (req, res)=> {
   const {id} = req.params;
+  console.log(req.body)
   const editedCampground = await Campground.findByIdAndUpdate(id, {...req.body.campground})
+  // We don't want to replace but add to the images array
+  const images = req.files.map(file => ({url: file.path, filename: file.filename}))
+  editedCampground.images.push(...images)
+  await editedCampground.save()
+
+  if (req.body.deleteImages) {
+    for (let file of req.body.deleteImages) {
+      await cloudinary.uploader.destroy(file)
+    }
+    await editedCampground.updateOne({ $pull: { images: { filename: { $in: req.body.deleteImages } }}})
+  }
   req.flash('success', 'Successfully updated campground!')
   res.redirect(`/campgrounds/${editedCampground._id}`)
 }
