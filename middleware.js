@@ -33,7 +33,7 @@ module.exports.validateReview = (req, res, next) => {
 module.exports.isAuthor = async(req, res, next) => {
   const {id} = req.params;
   const campground = await Campground.findById(id)
-  // the author is not being populated, it is just and id
+  // the author is not being populated, it is just an id
   if (!campground.author.equals(req.user._id)) {
     req.flash('error', 'You do not have permission for that action!')
     return res.redirect(`/campgrounds/${id}`)
@@ -42,8 +42,8 @@ module.exports.isAuthor = async(req, res, next) => {
 }
 
 module.exports.isReviewAuthor = async(req, res, next) => {
-  const { id, reviewid } = req.params;
-  const review = await Review.findById(reviewid)
+  const { id, reviewId } = req.params;
+  const review = await Review.findById(reviewId)
   // the author is not being populated, it is just and id
   if (!review.author.equals(req.user._id)) {
     req.flash('error', 'You do not have permission for that action!')

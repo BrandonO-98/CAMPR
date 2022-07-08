@@ -3,10 +3,15 @@ const router = express.Router()
 const catchAsync = require('../utils/catchAsync')
 const campgroundController = require('../controllers/campgroundController')
 const { isLoggedIn, validateCampground, isAuthor} = require('../middleware')
+const multer = require('multer')
+const { storage } = require('../cloudinary')
+const upload = multer({ storage })
 
 router.route('/')
   .get(catchAsync(campgroundController.index))
-  .post(isLoggedIn, validateCampground, catchAsync(campgroundController.createCampground))
+  // we are validating after we  upload this should't be
+  .post(isLoggedIn,  upload.array('image'), validateCampground, catchAsync(campgroundController.createCampground))
+
 
 router.get('/new', isLoggedIn, campgroundController.renderNewForm)
 
