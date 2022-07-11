@@ -9,7 +9,12 @@
       <!-- define a row for the columns to be placed in -->
       <div class="row">
         <div class="col-md-4">
-          <img src="<%= campground.images[0].url %> " alt="" class="img-fluid">
+          <% if (campground.images.length) { %>
+            <img src="<%= campground.images[0].url %> " alt="" class="img-fluid">
+          <% } else { %>
+            <img src="https://res.cloudinary.com/da6su05rx/image/upload/v1657298929/CAMPR/s0zpc79ke4o05m7gfmml.jpg" alt="" class="img-fluid">
+          <% } %>
+    
         </div>
         <div class="col-md-8">
           <div class="card-body">
