@@ -11,6 +11,8 @@ imageSchema.virtual('thumbnail').get(function() {
   return this.url.replace('/upload', '/upload/w_200')
 })
 
+const opts = { toJSON: { virtuals: true } }
+
 const campgroundSchema = new Schema({
   title: String,
   images: [imageSchema],
@@ -40,7 +42,14 @@ const campgroundSchema = new Schema({
       ref: 'Review'
     }
   ]
-}) 
+}, opts) 
+
+// virtual to create properties property for mapbox
+campgroundSchema.virtual('properties.popUpMarkup').get(function() {
+  return `
+  <strong><a href="/campgrounds/${this._id}">${this.title}</a></strong>
+  <p>${this.description.substring(0,100)}...</p>`
+})
 
 // remove reviews after deleting a campground
 campgroundSchema.post('findOneAndDelete', async function(doc) {
