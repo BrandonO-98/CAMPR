@@ -51,7 +51,7 @@
 
       <div class="mb-3">
         <% editCampground.images.forEach((image, i) => { %>
-          <img src="<%= image.thumbnail %>" class="img-thumbnail" alt="">
+          <img src="<%= image.thumbnail %>" class="img-thumbnail" alt="" crossorigin>
           <div class="form-check-inline">
             <input type="checkbox" name="deleteImages[]" id="image-<%= i %>" value="<%= image.filename %>">
           </div>
