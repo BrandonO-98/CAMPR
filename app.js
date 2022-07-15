@@ -15,12 +15,14 @@ const LocalStrategy = require('passport-local')
 const User = require('./models/user')
 const mongoSanitize = require('express-mongo-sanitize')
 const helmet = require('helmet')
+const mongoStore = require('connect-mongo')(session)
 
 const userRoutes = require('./routes/userRoutes')
 const campgroundRoutes = require('./routes/campgroundRoutes')
 const reviewRoutes = require('./routes/reviewRoutes')
+const dbUrl = process.env.DB_URL || 'mongodb://localhost:27017/campr'
 
-mongoose.connect('mongodb://localhost:27017/campr')
+mongoose.connect(dbUrl)
 .then(()=> {
   console.log("Database Connected!")
 })
@@ -44,9 +46,23 @@ app.use(express.urlencoded({ extended: true }))
 app.use(methodOverride('_method'))
 app.use(mongoSanitize())
 
+const secret = process.env.SECRET || 'thisismysecret'
+
+const store = new mongoStore({
+  url:dbUrl,
+  secret,
+  // if the session data hasn't changed don't reupdate until after 24hrs
+  touchAfter: 24 * 60 * 60
+})
+
+store.on('error', function(e) {
+  console.log('Session store error', e)
+})
+
 const sessionConfig = {
+  store, 
   name: 'session',
-  secret: 'thisismysecret', 
+  secret, 
   resave: false,
   saveUninitialized: true,
   cookie: {
