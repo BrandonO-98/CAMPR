@@ -7,37 +7,19 @@
   <title>CAMPR</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
+  <script src='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.js' crossorigin></script>
+  <link href='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.css' crossorigin rel='stylesheet' />
+
+  <link rel="stylesheet" href="/stylesheets/app.css">
 </head>
 <body class="d-flex flex-column vh-100">
   <%- include('../partials/navbar.ejs') %> 
   <main class="container mt-4">
+    <%- include('../partials/flash.ejs') %> 
     <%- body %> 
   </main>
   <%- include('../partials/footer.ejs') %> 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-  
-<script>
-  // Example starter JavaScript for disabling form submissions if there are invalid fields
-(function () {
-  'use strict'
-
-  // Fetch all the forms we want to apply custom Bootstrap validation styles to
-  const forms = document.querySelectorAll('.validated-form')
-
-  // Loop over them and prevent submission
-  //make an array from nodelist
-  Array.from(forms)
-    .forEach(function (form) {
-      form.addEventListener('submit', function (event) {
-        if (!form.checkValidity()) {
-          event.preventDefault()
-          event.stopPropagation()
-        }
-
-        form.classList.add('was-validated')
-      }, false)
-    })
-})()
-</script>
+  <script src="/JavaScripts/validateFormsBootstrap.js"></script>
 </body>
 </html>
