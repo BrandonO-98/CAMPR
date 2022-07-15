@@ -18,7 +18,6 @@ module.exports.createCampground = async (req, res)=> {
     limit: 1
   })
     .send()
-  console.log(geoData.body.features[0].geometry)
   const newCampground = new Campground(req.body.campground)
   newCampground.geometry = geoData.body.features[0].geometry
   newCampground.images = req.files.map(file => ({url: file.path, filename: file.filename}))
@@ -61,7 +60,6 @@ module.exports.renderEditForm = async (req, res)=> {
 
 module.exports.editCampground = async (req, res)=> {
   const {id} = req.params;
-  console.log(req.body)
   const editedCampground = await Campground.findByIdAndUpdate(id, {...req.body.campground})
   // We don't want to replace but add to the images array
   const images = req.files.map(file => ({url: file.path, filename: file.filename}))

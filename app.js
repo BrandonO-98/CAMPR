@@ -146,6 +146,7 @@ app.use((req, res, next) => {
     // store the url requested if comming from anything but home and login pgs
   if (!['/login', '/'].includes(req.originalUrl)) {
     req.session.returnTo = req.originalUrl
+    // console.log(req.session.returnTo, 'app.js151')
   }
   res.locals.success = req.flash('success')
   res.locals.error = req.flash('error')
